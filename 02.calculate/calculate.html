@@ -25,7 +25,7 @@
         <button id="num-4">4</button>
         <button id="num-5">5</button>
         <button id="num-6">6</button>
-        <button id="mius">-</button>
+        <button id="minus">-</button>
     </div>
     <div class="row">
         <button id="num-1">1</button>
@@ -45,35 +45,97 @@
       let numTwo = '';
       const $operator = document.querySelector('#operator');
       const $result = document.querySelector('#result');
-      const onclickNumber = (number)=> (event) => { //중복 이지만 특정부분이 다르다면, 매개변수  //return 생략 
-          if(operator){//비어 있지 않다.
-            numTwo += number;
-          }else{//비어있다.
-            numOne += number;
+
+      const onclickNumber = (event) => { //textContent 의 글자를 가져온다.
+        if(!operator){//비어 있다.
+          numOne += event.target.textContent;
+          $result.value += event.target.textContent;
+          return;
+        }
+        if(!numTwo){//비어 있지 않다.
+          $result.value = '';
+        }
+        numTwo += event.target.textContent;
+        $result.value += event.target.textContent;
+      };
+
+      document.querySelector('#num-0').addEventListener('click', onclickNumber);
+      document.querySelector('#num-1').addEventListener('click', onclickNumber);
+      document.querySelector('#num-2').addEventListener('click', onclickNumber);
+      document.querySelector('#num-3').addEventListener('click', onclickNumber);
+      document.querySelector('#num-4').addEventListener('click', onclickNumber);
+      document.querySelector('#num-5').addEventListener('click', onclickNumber);
+      document.querySelector('#num-6').addEventListener('click', onclickNumber);
+      document.querySelector('#num-7').addEventListener('click', onclickNumber);
+      document.querySelector('#num-8').addEventListener('click', onclickNumber);
+      document.querySelector('#num-9').addEventListener('click', onclickNumber);
+
+      const onClickOperator = (op) => () => {//중복 이지만 특정부분이 다르다면, 매개변수  //return 생략 
+        if(numTwo){
+          switch(operator){
+            case '+' :
+              $result.value = parseInt(numOne) + parseInt(numTwo);
+              break;
+            case '-':
+              $result.vaule = numOne - numTwo; // - * / 는 숫자로 인식한다.
+             break;
+            case '*':
+              $result.vaule = numOne * numTwo;
+             break;
+            case '/':
+              $result.vaule = numOne / numTwo;
+             break;
+            default:
+             break;
           }
-          $result.value += number;
-      };//고차함수 (high order function) :함수간의 중복을 없애기위해서 고차함수를 쓴다.//함수에 함수실행 함수에 리턴실행
+          numOne = $result.value;
+          numTwo = '';
+        }
+        if(numOne){
+          operator = op;
+          $operator.value = op;
+        }else{
+          alert('숫자를 먼저 입력하세요.')
+        }
+      }//고차함수 (high order function) :함수간의 중복을 없애기위해서 고차함수를 쓴다.//함수에 함수실행 함수에 리턴실행 
 
-      document.querySelector('#num-0').addEventListener('click', onclickNumber('0'));
-      document.querySelector('#num-1').addEventListener('click', onclickNumber('1'));
-      document.querySelector('#num-2').addEventListener('click', onclickNumber('2'));
-      document.querySelector('#num-3').addEventListener('click', onclickNumber('3'));
-      document.querySelector('#num-4').addEventListener('click', onclickNumber('4'));
-      document.querySelector('#num-5').addEventListener('click', onclickNumber('5'));
-      document.querySelector('#num-6').addEventListener('click', onclickNumber('6'));
-      document.querySelector('#num-7').addEventListener('click', onclickNumber('7'));
-      document.querySelector('#num-8').addEventListener('click', onclickNumber('8'));
-      document.querySelector('#num-9').addEventListener('click', onclickNumber('9'));
-
-      cosnt a = ()=>{
-
-      }
-      document.querySelector('#plus').addEventListener('click',()=>{});
-      document.querySelector('#minus').addEventListener('click',()=>{});
-      document.querySelector('#divide').addEventListener('click',()=>{});
-      document.querySelector('#multiply').addEventListener('click',()=>{});
-      document.querySelector('#calculate').addEventListener('click',()=>{});
-      document.querySelector('#clear').addEventListener('click',()=>{});
+      document.querySelector('#plus').addEventListener('click', onClickOperator('+'));
+      document.querySelector('#minus').addEventListener('click', onClickOperator('-'));
+      document.querySelector('#divide').addEventListener('click', onClickOperator('/'));
+      document.querySelector('#multiply').addEventListener('click', onClickOperator('*'));
+      document.querySelector('#calculate').addEventListener('click',()=>{
+        if(numTwo){
+          switch(operator){
+            case '+' :
+              $result.value = parseInt(numOne) + parseInt(numTwo);
+              break;
+            case '-':
+              $result.vaule = numOne - numTwo; // - * / 는 숫자로 인식한다.
+             break;
+            case '*':
+              $result.vaule = numOne * numTwo;
+             break;
+            case '/':
+              $result.vaule = numOne / numTwo;
+             break;
+            default:
+             break;
+          }
+          $operator.value='';
+          numOne = $result.value;
+          operator = '';
+          numTow = '';
+        }else{
+            alert('숫자를 먼저 입력하세요.');
+        }
+      });
+      document.querySelector('#clear').addEventListener('click',()=>{
+        numOne = '';
+        operator='';
+        numTwo = '';
+        $operator.value = '';
+        $result.value = '';
+      });
     </script>
 </body>
 </html>
